@@ -56,11 +56,23 @@ let incorrectNames = [
 let currentIndex = 0;
 let lastIncorrectNamePosition;
 
+//TODO: это не работает
 function nextIncorrectName() {
-    for(currentIndex = 0; i < currentIndex.length; currentIndex++) {
-        //TODO
+    for(; currentIndex < incorrectNames.length; currentIndex++) {
+		let currentName = incorrectNames[currentIndex];
+        const position = textPositionInArea(currentName, currentName.length);
+		if(position < 0) continue;
+		
+		lastIncorrectNamePosition = position + 1;
+		document.getElementById("noteLabel").innerText = 
+		       "⚠️ Возможно, найденный текст является неудачным переводом имени (срабатывание может быть ложным) ⚠️";
+		const textArea = document.getElementById("textArea");
+        focusText(textArea, position, currentName.length);
+        scrollToPosition(textArea, position);
+        document.getElementById("button").innerText = "Дальше";  
+        return true;	
     }
-    return false; //TODO
+    return false;
 }
 
 function onNoProblems() {
