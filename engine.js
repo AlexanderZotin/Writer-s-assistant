@@ -1,9 +1,9 @@
 
 function nextProblem() {
-	document.getElementById("restartButton").disabled = false;
+    document.getElementById("restartButton").disabled = false;
     if(!nextIncorrectMillicycle() && !nextIncorrectName()) {
         document.getElementById("noteLabel").innerText = "✅ миЛициклов и переводов имён больше не обнаружено ✅";
-		document.getElementById("nextButton").disabled = true;
+        document.getElementById("nextButton").disabled = true;
     }
 }
 
@@ -33,18 +33,18 @@ function focusText(textArea, position, length) {
 }
 
 function scrollToPosition(textArea, position) {
-	//TODO: почти правильно, но немного надо поправить. В целом, надо скроллить чутка поменьше
-	console.log("length: " + textArea.value.length);
-	console.log("position: " + position);
+    //TODO: почти правильно, но немного надо поправить. В целом, надо скроллить чутка поменьше
+    console.log("length: " + textArea.value.length);
+    console.log("position: " + position);
     const numberOfLines = Math.floor(textArea.scrollHeight / 20);
-	console.log("numberOfLines: " + numberOfLines);
+    console.log("numberOfLines: " + numberOfLines);
     const procent = position / (textArea.value.length / 100);
-	console.log("procent: " + procent);
-	const lines = numberOfLines / 100 * procent;
-	console.log("lines: " + lines);
+    console.log("procent: " + procent);
+    const lines = numberOfLines / 100 * procent;
+    console.log("lines: " + lines);
     const toScroll = 20 * lines;
-	console.log("toScroll: " + toScroll);
-	console.log("scrollHeight: " + textArea.scrollHeight);
+    console.log("toScroll: " + toScroll);
+    console.log("scrollHeight: " + textArea.scrollHeight);
     textArea.scrollTop = toScroll;
 }
 
@@ -81,10 +81,10 @@ function nextIncorrectName() {
 }
 
 function restartButton() {
-	lastIncorrectMillicycle = -1;
-	lastIncorrectNamePosition = -1;
-	currentIndex = 0;
-	document.getElementById("nextButton").disabled = false;
-	document.getElementById("restartButton").disabled = true;
-	document.getElementById("noteLabel").innerText = "Вставь текст и нажми \"Дальше\"...";
+    lastIncorrectMillicycle = -1;
+    lastIncorrectNamePosition = -1;
+    currentIndex = 0;
+    document.getElementById("nextButton").disabled = false;
+    document.getElementById("restartButton").disabled = true;
+    document.getElementById("noteLabel").innerText = "Вставь текст и нажми \"Дальше\"...";
 }
