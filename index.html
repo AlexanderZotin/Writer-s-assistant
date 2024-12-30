@@ -17,9 +17,15 @@
     </p>
     <br>
     
-    <label id = "noteLabel">Вставь текст и нажми кнопку ниже...</label>
+    <label id = "noteLabel">Вставь текст и нажми "Дальше"...</label>
     <br>
     <br>
+	
+	<button id = "nextButton">Дальше  ▶ ▶</button>
+	<button id = "restartButton" disabled = "true">🔁 Заново 🔁</button>
+    <br>
+    <br>
+	
     <textarea id = "textArea"
         autofocus = "true" 
         spellcheck = "true" 
@@ -27,13 +33,10 @@
     ></textarea>
     <br>
     
-    <button id = "button">Начать проверку!</button>
-    <br>
-    <br>
-    
     <script src = "engine.js"></script>
     <script>
-        document.getElementById("button").addEventListener("click", nextProblem); 
+        document.getElementById("nextButton").addEventListener("click", nextProblem);
+        document.getElementById("restartButton").addEventListener("click", restartButton);		
     </script>
 </body>
 </html>

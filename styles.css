@@ -23,6 +23,7 @@ textarea {
     height: 60vh;
     
     width: 85%;
+	line-height: 20px;
     margin-left: auto;
     margin-right: auto;
     
@@ -30,16 +31,31 @@ textarea {
 }
 
 button {
-    width: 85%;
+	display: inline;
+    width: 40%;
     height: 50px;
-    font-size: 20px;
+    font-size: 15px;
     
     color: white;
-    background: #00693E;
+    background: #24a319;
     border-width: 10px;
-    border-color: #00693E;
+    border-color: #24a319;
     border-style: solid;
     border-radius: 10px;
     text-decoration: none;
 }
+
+button:disabled {
+	cursor: not-allowed;
+	pointer-events: none;
+	color: #E5E4E2;
+	border-color: #a0a0a0;
+	background: #a0a0a0;
+}
+
+button:active {
+    box-shadow: 0 3px #24a319;
+    transform: translateY(1px);
+}
+
 

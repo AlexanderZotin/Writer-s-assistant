@@ -1,15 +1,13 @@
 
 function nextProblem() {
-    const buttonText = document.getElementById("button").innerText;
-    if(buttonText === "Проверить ещё раз!") {
-        lastIncorrectMillicycle = 0;
-    }
+	document.getElementById("restartButton").disabled = false;
     if(!nextIncorrectMillicycle() && !nextIncorrectName()) {
-        onNoProblems();
+        document.getElementById("noteLabel").innerText = "✅ миЛициклов и переводов имён больше не обнаружено ✅";
+		document.getElementById("nextButton").disabled = true;
     }
 }
 
-let lastIncorrectMillicycle = 0;
+let lastIncorrectMillicycle = -1;
 
 function nextIncorrectMillicycle() {
     const position = textPositionInArea("милицикл", lastIncorrectMillicycle);
@@ -25,9 +23,8 @@ function nextIncorrectMillicycle() {
 }
 
 function textPositionInArea(str, startPosition) {
-    return textArea.value.toLowerCase().indexOf(str, startPosition);
+    return textArea.value.toLowerCase().indexOf(str.toLowerCase(), startPosition);
 }
-
 
 function focusText(textArea, position, length) {
     textArea.selectionStart = position;
@@ -36,8 +33,18 @@ function focusText(textArea, position, length) {
 }
 
 function scrollToPosition(textArea, position) {
+	//TODO: почти правильно, но немного надо поправить. В целом, надо скроллить чутка поменьше
+	console.log("length: " + textArea.value.length);
+	console.log("position: " + position);
+    const numberOfLines = Math.floor(textArea.scrollHeight / 20);
+	console.log("numberOfLines: " + numberOfLines);
     const procent = position / (textArea.value.length / 100);
-    const toScroll = Math.round(textArea.scrollHeight / 100 * procent);
+	console.log("procent: " + procent);
+	const lines = numberOfLines / 100 * procent;
+	console.log("lines: " + lines);
+    const toScroll = 20 * lines;
+	console.log("toScroll: " + toScroll);
+	console.log("scrollHeight: " + textArea.scrollHeight);
     textArea.scrollTop = toScroll;
 }
 
@@ -54,13 +61,12 @@ let incorrectNames = [
     "Грива", "Веточка", "Ветер", "Рапира", "Крепыш Максимус", "Победитель", "Огонёк", "Скандалист"
 ];
 let currentIndex = 0;
-let lastIncorrectNamePosition;
+let lastIncorrectNamePosition = -1;
 
-//TODO: это не работает
 function nextIncorrectName() {
     for(; currentIndex < incorrectNames.length; currentIndex++) {
         let currentName = incorrectNames[currentIndex];
-        const position = textPositionInArea(currentName, currentName.length);
+        const position = textPositionInArea(currentName, lastIncorrectNamePosition);
         if(position < 0) continue;
         
         lastIncorrectNamePosition = position + 1;
@@ -68,14 +74,17 @@ function nextIncorrectName() {
                "⚠️ Возможно, найденный текст является неудачным переводом имени (срабатывание может быть ложным) ⚠️";
         const textArea = document.getElementById("textArea");
         focusText(textArea, position, currentName.length);
-        scrollToPosition(textArea, position);
-        document.getElementById("button").innerText = "Дальше";  
+        scrollToPosition(textArea, position); 
         return true;    
     }
     return false;
 }
 
-function onNoProblems() {
-    document.getElementById("button").innerText = "Проверить ещё раз!";    
-    document.getElementById("noteLabel").innerText = "✅ миЛициклов и переводов имён больше не обнаружено ✅";
+function restartButton() {
+	lastIncorrectMillicycle = -1;
+	lastIncorrectNamePosition = -1;
+	currentIndex = 0;
+	document.getElementById("nextButton").disabled = false;
+	document.getElementById("restartButton").disabled = true;
+	document.getElementById("noteLabel").innerText = "Вставь текст и нажми \"Дальше\"...";
 }
