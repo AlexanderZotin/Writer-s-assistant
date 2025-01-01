@@ -21,20 +21,22 @@ textarea {
     display: flex;
     flex-direction: column;
     height: 60vh;
-    
     width: 85%;
-    line-height: 20px;
+    
+    font-size: 14px;
+    font-family: arial;
+    line-height: 16px;
     margin-left: auto;
     margin-right: auto;
-    
-    font-family: arial;
 }
 
 button {
     display: inline;
     width: 40%;
     height: 50px;
+    
     font-size: 15px;
+    text-decoration: none;
     
     color: white;
     background: #24a319;
@@ -42,7 +44,6 @@ button {
     border-color: #24a319;
     border-style: solid;
     border-radius: 10px;
-    text-decoration: none;
 }
 
 button:disabled {

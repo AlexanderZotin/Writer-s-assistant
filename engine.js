@@ -18,7 +18,6 @@ function nextIncorrectMillicycle() {
     const textArea = document.getElementById("textArea");
     focusText(textArea, position, 8);
     scrollToPosition(textArea, position);
-    document.getElementById("button").innerText = "Дальше";    
     return true;
 }
 
@@ -27,34 +26,31 @@ function textPositionInArea(str, startPosition) {
 }
 
 function focusText(textArea, position, length) {
-    textArea.selectionStart = position;
-    textArea.selectionEnd = textArea.selectionStart + length;
-    textArea.focus();
-}
-
-function scrollToPosition(textArea, position) {
-    //TODO: почти правильно, но немного надо поправить. В целом, надо скроллить чутка поменьше
-    console.log("length: " + textArea.value.length);
-    console.log("position: " + position);
-    const numberOfLines = Math.floor(textArea.scrollHeight / 20);
-    console.log("numberOfLines: " + numberOfLines);
-    const procent = position / (textArea.value.length / 100);
-    console.log("procent: " + procent);
-    const lines = numberOfLines / 100 * procent;
-    console.log("lines: " + lines);
-    const toScroll = 20 * lines;
-    console.log("toScroll: " + toScroll);
-    console.log("scrollHeight: " + textArea.scrollHeight);
-    textArea.scrollTop = toScroll;
+    let scrollHeight = Math.max(
+        document.body.scrollHeight, document.documentElement.scrollHeight,
+        document.body.offsetHeight, document.documentElement.offsetHeight,
+        document.body.clientHeight, document.documentElement.clientHeight
+    );
+    //Сначала нужно прокрутить body, чтобы textarea было видно полностью
+    document.body.scrollTop = scrollHeight;
+    
+    const selectionEnd = position + length;
+    textArea.focus(); //Эта строка важна, т.к операции сами по себе связаны с фокусом
+    textArea.scrollTop = 0;
+    const fullText = textArea.value;
+    textArea.value = fullText.substring(0, selectionEnd);
+    textArea.scrollTop = textArea.scrollHeight;
+    textArea.value = fullText;
+    textArea.setSelectionRange(position, selectionEnd);
 }
 
 let incorrectNames = [
-    "Сыщик", "Твердолобый", "Нытик", "Трещотка", "Храповик", "Дымовик", "Бравый", "Бархан",
+    "Сыщик", " Твердолобый", "Нытик", "Трещотка", "Храповик", "Дымовик", "Бравый", "Бархан",
     "Молниекрыл", "Силач", "Шершень", "Охотник", "Броневик", "Апперкот", "Мерцатель", "Следопыт",
     "Плакун", "Разрядник", "Скалолаз", "Истребитель", "Шлак", "Слякоть", "Смельчак", 
     "Взрывало", "Рычун", "Налетало", "Шезлонг", "Гранит", "Тягач", "Томогавк", "Паникер", 
     "Тормоз", "Дымовик", "Водомёт", "Крах", "Бодун", "Стальной", "Реверс", "Пистон",
-    "Эффект", "Пролаза", "Друг", "Верстак", "Компот", "Порез", "Рогатка", "Ворчун",
+    "Эффект", "Пролаза", "Верстак", "Компот", "Порез", "Рогатка", "Ворчун",
     "Спринтер", "Дикарь", "Гудок", "Крутой", "Затвор", "Косинус", "Световик", "Штраф",
     "Долгопупс", "Долгорукий", "Длиннорукий", "Револьвер", "Астрофакел", "Панч", "Цереброс", "Быстрый",
     "Крушитель", "Фантазер", "Хром", "Умник", "Снайпер", "Коготь", "Фугас", "Ливень", 
@@ -74,13 +70,12 @@ function nextIncorrectName() {
                "⚠️ Возможно, найденный текст является неудачным переводом имени (срабатывание может быть ложным) ⚠️";
         const textArea = document.getElementById("textArea");
         focusText(textArea, position, currentName.length);
-        scrollToPosition(textArea, position); 
         return true;    
     }
     return false;
 }
 
-function restartButton() {
+function restartCheck() {
     lastIncorrectMillicycle = -1;
     lastIncorrectNamePosition = -1;
     currentIndex = 0;
