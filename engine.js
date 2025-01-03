@@ -17,7 +17,6 @@ function nextIncorrectMillicycle() {
     document.getElementById("noteLabel").innerText = "⚠️ Найден миЛицикл! ⚠️";
     const textArea = document.getElementById("textArea");
     focusText(textArea, position, 8);
-    scrollToPosition(textArea, position);
     return true;
 }
 
@@ -49,7 +48,7 @@ let incorrectNames = [
     "Молниекрыл", "Силач", "Шершень", "Охотник", "Броневик", "Апперкот", "Мерцатель", "Следопыт",
     "Плакун", "Разрядник", "Скалолаз", "Истребитель", "Шлак", "Слякоть", "Смельчак", 
     "Взрывало", "Рычун", "Налетало", "Шезлонг", "Гранит", "Тягач", "Томогавк", "Паникер", 
-    "Тормоз", "Дымовик", "Водомёт", "Крах", "Бодун", "Стальной", "Реверс", "Пистон",
+    "Тормоз", "Водомёт", "Крах", "Бодун", "Стальной", "Реверс", "Пистон",
     "Эффект", "Пролаза", "Верстак", "Компот", "Порез", "Рогатка", "Ворчун",
     "Спринтер", "Дикарь", "Гудок", "Крутой", "Затвор", "Косинус", "Световик", "Штраф",
     "Долгопупс", "Долгорукий", "Длиннорукий", "Револьвер", "Астрофакел", "Панч", "Цереброс", "Быстрый",
@@ -57,27 +56,32 @@ let incorrectNames = [
     "Грива", "Веточка", "Ветер", "Рапира", "Крепыш", "Максимус", "Победитель", "Огонёк", "Скандалист"
 ];
 let currentIndex = 0;
-let lastIncorrectNamePosition = -1;
+let lastCurrentNamePosition = -1;
 
 function nextIncorrectName() {
-    for(; currentIndex < incorrectNames.length; currentIndex++) {
+    while(true) {
+		if(currentIndex >= incorrectNames.length) break;
+		
         let currentName = incorrectNames[currentIndex];
-        const position = textPositionInArea(currentName, lastIncorrectNamePosition);
-        if(position < 0) continue;
-        
-        lastIncorrectNamePosition = position + 1;
-        document.getElementById("noteLabel").innerText = 
-               "⚠️ Возможно, найденный текст является неудачным переводом имени (срабатывание может быть ложным) ⚠️";
-        const textArea = document.getElementById("textArea");
-        focusText(textArea, position, currentName.length);
-        return true;    
+        const position = textPositionInArea(currentName, lastCurrentNamePosition);
+        if(position < 0) {
+			lastCurrentNamePosition = -1;
+			currentIndex++;
+		} else {
+		    lastCurrentNamePosition = position + 1;
+            document.getElementById("noteLabel").innerText = 
+                   "⚠️ Возможно, найденный текст является неудачным переводом имени (срабатывание может быть ложным) ⚠️";
+            const textArea = document.getElementById("textArea");
+            focusText(textArea, position, currentName.length);
+            return true;    	
+		}
     }
     return false;
 }
 
 function restartCheck() {
     lastIncorrectMillicycle = -1;
-    lastIncorrectNamePosition = -1;
+    lastCurrentNamePosition = -1;
     currentIndex = 0;
     document.getElementById("nextButton").disabled = false;
     document.getElementById("restartButton").disabled = true;
