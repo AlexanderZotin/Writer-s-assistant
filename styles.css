@@ -10,11 +10,11 @@ body {
 }
 
 p {
-    font-size: 15px;
+    font-size: medium;
 }
 
 label {
-    font-size: 18px;    
+    font-size: large;    
 }    
 
 textarea {
@@ -32,10 +32,11 @@ textarea {
 
 button {
     display: inline;
-    width: 40%;
+	min-width: fit-content;
+    width: 40vw;
     height: 50px;
     
-    font-size: 15px;
+    font-size: medium;
     text-decoration: none;
     
     color: white;
